@@ -64,9 +64,15 @@ Install helm using: https://github.com/aafak/dev-setup/tree/main/k8s/helm
 ```
 aafak@aafak-virtual-machine:~/go_apps/auth-service$ ls
 cmd  Dockerfile  go.mod  go.sum  helm  internal  Jenkinsfile  LICENSE  Makefile  README.md
+
 aafak@aafak-virtual-machine:~/go_apps/auth-service$ ls helm/
 Chart.yaml  templates  values-prod.yaml  values.yaml
 aafak@aafak-virtual-machine:~/go_apps/auth-service$
+
+aafak@aafak-virtual-machine:~/go_apps/auth-service$ ls helm/templates/
+configmap.yaml  deployment.yaml  service.yaml
+aafak@aafak-virtual-machine:~/go_apps/auth-service$
+
 
 aafak@aafak-virtual-machine:~/go_apps/auth-service$ helm install  auth-service ./helm -f ./helm/values.yaml
 NAME: auth-service

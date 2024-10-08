@@ -1,19 +1,38 @@
 replicaCount: 1
 
 image:
-  repository: aafak/auth-service
+  repository: 1234567.dkr.ecr.amazonaws.com/app1/auth-service
   pullPolicy: Always
-  tag: "latest"
+  # tag: "latest"
 
-namespace: "default"
+namespace: "setup"
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: "vault-auth-service"
 
 pod:
   enabled: true
- 
+  annotations:
+      vault.hashicorp.com/agent-inject: "true"
+      vault.hashicorp.com/agent-inject-status: "update"
+      vault.hashicorp.com/agent-init-first: "true"
+      vault.hashicorp.com/role: "authz"
+      vault.hashicorp.com/agent-requests-cpu: 100m
+      vault.hashicorp.com/agent-pre-populate-only: "true"
+      vault.hashicorp.com/agent-inject-template-secrets: |
+        {{- with secret "project1/app/secrets" -}}
+          {{ .Data.key }}
+        {{- end }}
+
 securityContext: {}
   # capabilities:
   #   drop:
@@ -23,10 +42,10 @@ securityContext: {}
 # runAsUser: 1000
 
 service:
-  authsvc:
+  orchestratorsvc:
     type: ClusterIP
     grpcPort: 9051
-    restPort: 8080
+    restPort: 9900
     baseroute: /api/v1
   authz:
     disable: false
@@ -37,7 +56,7 @@ env:
   kafkaGroupID: auth-svc
   kafkaPartitions: 1
   kafkaReplicas: 1
-  kafkaBootstrapServers: my-kafka:19092
+  kafkaBootstrapServers: auth-kafka:19092
   kafkaSslMode: false
   debugMode: true
   deployMode: prod

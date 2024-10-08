@@ -10,7 +10,6 @@ data:
   DB_PORT: "5433"
   DB_NAME: "authz"
   DB_USER: "aafak"
-  DB_PASSWORD: "test"
   APP_ENV: "production"
   LOG_LEVEL: "info"
   DEBUG_MODE: "false"

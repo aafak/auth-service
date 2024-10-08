@@ -39,5 +39,16 @@ spec:
                 configMapKeyRef:
                   key: DATABASE_URL
                   name: postgres-configmap
+            # Load sensitive environment variables from Secret
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_PASSWORD
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: SECRET_KEY
 
 
