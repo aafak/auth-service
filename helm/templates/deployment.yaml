@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  strategy:
+    type: Recreate
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  template:
+    metadata:
+      {{- with .Values.pod.annotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app: {{ .Chart.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.authsvc.restPort }}
+            - containerPort: {{ .Values.service.authsvc.grpcPort }}
+          envFrom:
+            - configMapRef:
+                name: postgres-configmap
+          env:
+            - name: POSTGRES_SERVICE_NAME
+              value: "postgres"
+            - name: POSTGRES_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: DATABASE_URL
+                  name: postgres-configmap
+
+

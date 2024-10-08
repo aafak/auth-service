@@ -11,6 +11,7 @@ import (
 
 type UserHandler interface {
 	RegisterUser(c *gin.Context)
+	GetUser(c *gin.Context)
 }
 
 type userHandler struct {
@@ -36,4 +37,12 @@ func (h *userHandler) RegisterUser(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "User registered successfully"})
+}
+
+func (h *userHandler) GetUser(c *gin.Context) {
+	fmt.Println("Getting user....")
+	var user model.User
+	user.ID = 1
+	user.Username = "aafak"
+	c.JSON(http.StatusOK, user)
 }

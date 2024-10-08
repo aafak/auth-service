@@ -11,17 +11,17 @@ import (
 )
 
 func NewPostgresDB(dbUrl string) (*gorm.DB, error) {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("Recovered in NewPostgresDB", r)
+		}
+	}()
 	dbHost := os.Getenv("DB_HOST")
 	dbPort := os.Getenv("DB_PORT")
 	dbUser := os.Getenv("DB_USER")
 	dbPassword := os.Getenv("DB_PASSWORD")
 	dbName := os.Getenv("DB_NAME")
 
-	dbHost = "192.168.203.128"
-	dbUser = "aafak2"
-	dbPassword = "test"
-	dbName = "testdb"
-	dbPort = "5432"
 	// Build the PostgreSQL connection string
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=UTC",
 		dbHost, dbUser, dbPassword, dbName, dbPort)
@@ -29,7 +29,9 @@ func NewPostgresDB(dbUrl string) (*gorm.DB, error) {
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Fatal("Failed to connect to PostgreSQL database:", err)
+		// log.Fatal will exit, and `defer func(){...}(...)` will not run
+		//log.Fatal("Failed to connect to PostgreSQL database:", err)
+		return nil, err
 	}
 
 	err = db.AutoMigrate(&model.User{})

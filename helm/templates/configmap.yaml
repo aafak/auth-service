@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-configmap
+  namespace: default
+data:
+  # Key-value pairs
+  DATABASE_URL: "postgresql://localhost:5432/mydb"
+  DB_HOST: "postgres"
+  DB_PORT: "5433"
+  DB_NAME: "authz"
+  DB_USER: "aafak"
+  DB_PASSWORD: "test"
+  APP_ENV: "production"
+  LOG_LEVEL: "info"
+  DEBUG_MODE: "false"
+  # Multi-line configuration as key-value pair
+  CONFIG_JSON: |
+    {
+      "version": "1.0",
+      "settings": {
+        "theme": "light",
+        "max_retries": 3
+      }
+    }

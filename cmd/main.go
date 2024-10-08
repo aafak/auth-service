@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/aafak/auth-service/internal/handler"
 	"github.com/aafak/auth-service/internal/repository"
 	"github.com/aafak/auth-service/internal/service"
@@ -18,7 +20,7 @@ import (
 // 	{ID: "3", Name: "user3"},
 // }
 
-// func getUsers(c *gin.Context) {
+// func GetUsers(c *gin.Context) {
 // 	name := c.Query("name") // query parameter
 // 	if name != "" {
 // 		for _, user := range users {
@@ -38,7 +40,7 @@ import (
 func main() {
 	db, err := repository.NewPostgresDB("")
 	if err != nil {
-		panic("Failed to connect to DB")
+		fmt.Println("Failed to connect to DB")
 	}
 	userRepo := repository.NewUserRepository(db)
 	userService := service.NewUserService(userRepo)
@@ -46,7 +48,12 @@ func main() {
 
 	router := gin.Default()
 	router.POST("/register", userHandler.RegisterUser)
+	router.GET("/users", userHandler.GetUser)
 	//POST  http://localhost:8080/register      { "username" : "aafak",  "password": "test"}
 	// http://localhost:8080/users?name=user1
-	router.Run(":8080")
+	err = router.Run(":8080")
+	if err != nil {
+		panic("Failed to start server, error: " + err.Error())
+	}
+	fmt.Println("Server started, listening on port 8080")
 }
