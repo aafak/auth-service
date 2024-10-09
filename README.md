@@ -74,7 +74,7 @@ configmap.yaml  deployment.yaml  service.yaml
 aafak@aafak-virtual-machine:~/go_apps/auth-service$
 
 
-aafak@aafak-virtual-machine:~/go_apps/auth-service$ helm install  auth-service ./helm -f ./helm/values.yaml
+aafak@aafak-virtual-machine:~/go_apps/auth-service$ helm install auth-service ./helm -f ./helm/dev-values.yaml
 NAME: auth-service
 LAST DEPLOYED: Tue Oct  8 12:52:15 2024
 NAMESPACE: default
@@ -101,6 +101,13 @@ NAME                 DATA   AGE
 kube-root-ca.crt     1      15d
 postgres-configmap   10     27m
 aafak@aafak-virtual-machine:~$
+
+aafak@aafak-virtual-machine:~/go_apps/auth-service$ kubectl get secrets
+NAME                                 TYPE                 DATA   AGE
+db-secret                            Opaque               2      23s
+sh.helm.release.v1.auth-service.v1   helm.sh/release.v1   1      23s
+aafak@aafak-virtual-machine:~/go_apps/auth-service$
+
 
 aafak@aafak-virtual-machine:~/go_apps/auth-service$ kubectl get deploy
 NAME           READY   UP-TO-DATE   AVAILABLE   AGE
@@ -226,6 +233,7 @@ CONFIG_JSON={
 DB_USER=aafak
 POSTGRES_URL=postgresql://localhost:5432/mydb
 DB_PORT=5433
+SECRET_KEY=secret key
 DB_NAME=authz
 DEBUG_MODE=false
 DATABASE_URL=postgresql://localhost:5432/mydb
@@ -259,3 +267,6 @@ HOME=/root
 aafak@aafak-virtual-machine:~$
 
 ```
+
+# Push helm chart
+https://github.com/aafak/dev-setup/blob/main/k8s/helm/push_helm_chart.md
