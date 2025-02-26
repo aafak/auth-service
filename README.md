@@ -268,5 +268,43 @@ aafak@aafak-virtual-machine:~$
 
 ```
 
-# Push helm chart
+# Access from laptop:
+Suppose you have a your k8s cluster inside your local machine. Now if you want
+to access the application, then you can do it directly using the ClusterIP within the
+cluster. To expose this application outside the cluster and make it accessible on
+the Node’s IP then it can be done using the node port service. But if you want to
+access the same application on a port of your local machine then a mapping
+needs to be done between a port on the local machine with port on the k8s
+cluster. Only then you can access using localhost on your browser.
+Let
+![image](https://github.com/user-attachments/assets/e71ee3e3-8d57-40c9-95b7-8ecd9e682d62)
+
+Since our application is inside the kubernetes cluster and this is running inside
+a container. We are trying to access it from local machine. It is actually a
+different server, so for this to work we need to set up a kubectl port forward.
+To setup a port forward, just run the below command.
+
+```
+aafak@aafak-virtual-machine:~/go_apps$ minikube ip
+192.168.49.2
+
+aafak@aafak-virtual-machine:~/go_apps$ kubectl get svc
+NAME           TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+auth-service   NodePort    10.100.109.111   <none>        8080:31843/TCP   4m13s
+kubernetes     ClusterIP   10.96.0.1        <none>        443/TCP          18m
+postgres       NodePort    10.97.167.219    <none>        5433:31052/TCP   2m32s
+aafak@aafak-virtual-machine:~/go_apps$ curl -X GET http://192.168.49.2:31843/users
+{"id":1,"username":"aafak"}
+aafak@aafak-virtual-machine:~/go_apps$ kubectl port-forward svc/auth-service 9000:8080 --address=0.0.0.0
+Forwarding from 0.0.0.0:9000 -> 8080
+Handling connection for 9000
+Handling connection for 9000
+```
+
+# Now browse from laptop using ubuntu VM IP:  http://192.168.203.128:9000/users
+192.168.203.128 is the IP of VM not the minikube IP
+![image](https://github.com/user-attachments/assets/88794f3d-39f7-496c-ad55-b2c0f3ad3788)
+
+
+# Example to the Push helm chart
 https://github.com/aafak/dev-setup/blob/main/k8s/helm/push_helm_chart.md
