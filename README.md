@@ -306,5 +306,8 @@ Handling connection for 9000
 ![image](https://github.com/user-attachments/assets/88794f3d-39f7-496c-ad55-b2c0f3ad3788)
 
 
-# Example to the Push helm chart
+# Install using argocd
+https://github.com/aafak/dev-setup/blob/main/k8s/argocd
+
+# Example to Push the helm chart
 https://github.com/aafak/dev-setup/blob/main/k8s/helm/push_helm_chart.md
