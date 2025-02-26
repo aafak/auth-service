@@ -1,10 +1,10 @@
 # auth-service
 Handles user authentication and authorization.
 
-# Install postgres
+# First deploy the postgres pod inside the k8s cluster
 https://github.com/aafak/dev-setup/blob/main/postgres/install%20postgres_using_k8s.md
 
-# Build
+# Then locally test the app  
 ```
 aafak@aafak-virtual-machine:~/go_apps/auth-service$ ls
 cmd  Dockerfile  go.mod  go.sum  internal  Jenkinsfile  LICENSE  Makefile  README.md
@@ -57,7 +57,7 @@ aafak@aafak-virtual-machine:~$
 ```
 
 
-# Test with helm
+# Now test with helm
 Install helm using: https://github.com/aafak/dev-setup/tree/main/k8s/helm
 
 # Install auth service using helm
