@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: postgres-configmap
-  namespace: default
+  # namespace: default
 data:
   # Key-value pairs
   DATABASE_URL: "postgresql://localhost:5432/mydb"
